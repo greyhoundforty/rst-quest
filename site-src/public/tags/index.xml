@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>Tags on  the quest</title>
+    <link>https://rst.quest/tags/</link>
+    <description>Recent content in Tags on  the quest</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://rst.quest/tags/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>cli</title>
+      <link>https://rst.quest/tags/cli/</link>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/cli/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>search</title>
+      <link>https://rst.quest/tags/search/</link>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/search/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>cloud-shell</title>
+      <link>https://rst.quest/tags/cloud-shell/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/cloud-shell/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>code-engine</title>
+      <link>https://rst.quest/tags/code-engine/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/code-engine/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>containers</title>
+      <link>https://rst.quest/tags/containers/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/containers/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>object-storage</title>
+      <link>https://rst.quest/tags/object-storage/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/object-storage/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>serverless</title>
+      <link>https://rst.quest/tags/serverless/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/serverless/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>virtual-private-cloud</title>
+      <link>https://rst.quest/tags/virtual-private-cloud/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/tags/virtual-private-cloud/</guid>
+      <description></description>
+    </item>
+    
+  </channel>
+</rss>

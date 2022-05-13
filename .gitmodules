@@ -1,0 +1,9 @@
+[submodule "themes/risotto"]
+	path = themes/risotto
+	url = https://github.com/joeroe/risotto.git
+[submodule "themes/skeletonfw"]
+	path = themes/skeletonfw
+	url = https://github.com/bhaskarvk/hugo-skeletonfw-theme.git
+[submodule "themes/hugo-tania"]
+	path = themes/hugo-tania
+	url = https://github.com/WingLim/hugo-tania

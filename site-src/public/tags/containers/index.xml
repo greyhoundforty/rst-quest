@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>containers on  the quest</title>
+    <link>https://rst.quest/tags/containers/</link>
+    <description>Recent content in containers on  the quest</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://rst.quest/tags/containers/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Container image builds using IBM Code Engine</title>
+      <link>https://rst.quest/post/container-image-build-ce/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/container-image-build-ce/</guid>
+      <description>Overview  This guide will show you how to use the experimental IBM Code Engine to build a container image from a Source control repository. Behind the scenes Code Engine will use Tekton pipelines to pull our source code from a Github repository and then create a container image using the supplied Docker file. After the build is complete Code Engine will push the new container image in to the IBM Cloud Container Registry.</description>
+    </item>
+    
+  </channel>
+</rss>

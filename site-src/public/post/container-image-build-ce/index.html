@@ -1,0 +1,519 @@
+<!DOCTYPE html>
+<html lang="en-us">
+    
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="theme-color" content="dark">
+    <title>Container image builds using IBM Code Engine |  the quest</title>
+
+    
+    
+    
+    <meta property="og:site_name" content="rst quest" />
+    <meta property="og:title" content="Container image builds using IBM Code Engine |  the quest"/>
+    <meta itemprop="name" content="Container image builds using IBM Code Engine |  the quest" />
+    <meta name="twitter:title" content="Container image builds using IBM Code Engine |  the quest" />
+    <meta name="application-name" content="Container image builds using IBM Code Engine |  the quest" /><meta name="twitter:card" content="summary"/>
+
+    <meta name="description" content="Build a container image from source control using IBM Cloud Code Engine." />
+    <meta name="twitter:description" content="Build a container image from source control using IBM Cloud Code Engine. "/>
+    <meta itemprop="description" content=" Build a container image from source control using IBM Cloud Code Engine. "/>
+    <meta property="og:description" content=" Build a container image from source control using IBM Cloud Code Engine. " />
+
+    
+
+<meta property="og:type" content="article" />
+<meta property="article:publisher" content="Ryan Tiffany" />
+<meta property="og:article:published_time" content=2021-03-05T00:00:00Z />
+<meta property="article:published_time" content=2021-03-05T00:00:00Z />
+
+
+  <meta property="og:article:author" content="Ryan tiffany" />
+  <meta property="article:author" content="Ryan tiffany" />
+  <meta name="author" content="Ryan tiffany" />
+
+
+
+
+<script defer type="application/ld+json">
+  {
+    "@context": "http://schema.org",
+    "@type": "Article",
+    "headline": "Container image builds using IBM Code Engine",
+    "author": {
+      "@type": "Person",
+      "name": "Ryan Tiffany"
+    },
+    "datePublished": "2021-03-05",
+    "description": "Build a container image from source control using IBM Cloud Code Engine.",
+    "wordCount":  1029 ,
+    "mainEntityOfPage": "True",
+    "dateModified": "2021-03-05",
+    "publisher": {
+      "@type": "Organization",
+      "name": "Ryan Tiffany",
+      "logo": {
+        "@type": "imageObject",
+        "url": "https:\/\/rst.quest\/favicon.ico"
+      }
+    }
+  }
+</script>
+
+
+
+    <link rel="shortcut icon" type="image/x-icon" href="/favicon.ico" />
+    
+    <link rel="stylesheet" href="/sass/main.min.ab99ff095f832511e24ffb2fba2b51ad473b2f7e9301d674eba2c6c3a6e8bd81.css">
+    
+</head>
+    
+    <script>
+        (function() {
+            const colorSchemeKey = 'ThemeColorScheme';
+            if(!localStorage.getItem(colorSchemeKey)){
+                localStorage.setItem(colorSchemeKey, "auto");
+            }
+        })();
+    </script><script>
+    (function() {
+        const colorSchemeKey = 'ThemeColorScheme';
+        const colorSchemeItem = localStorage.getItem(colorSchemeKey);
+        const supportDarkMode = window.matchMedia('(prefers-color-scheme: dark)').matches === true;
+
+        if (colorSchemeItem == 'dark' || colorSchemeItem === 'auto' && supportDarkMode) {
+            
+
+            document.documentElement.dataset.userColorScheme = 'dark';
+        } else {
+            document.documentElement.dataset.userColorScheme = 'light';
+        }
+    })();
+</script>
+
+
+    <body class="dark">
+        <nav class="navbar">
+    <div class="container">
+        <div class="flex">
+            <div>
+                <a class="brand" href="/">
+                    
+                    
+                        <img src="/favicon.ico" />
+                    
+                     the quest
+                    </a>
+            </div>
+            <div class="flex">
+                
+                <a href="/articles/">Articles</a>
+                
+                <a href="/tags/">Tags</a>
+                
+                
+                    <button id="dark-mode-button">
+                    <svg class="light" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M30.312.776C32 19 20 32 .776 30.312c8.199 7.717 21.091 7.588 29.107-.429C37.9 21.867 38.03 8.975 30.312.776z"/><path d="M30.705 15.915a1.163 1.163 0 1 0 1.643 1.641a1.163 1.163 0 0 0-1.643-1.641zm-16.022 14.38a1.74 1.74 0 0 0 0 2.465a1.742 1.742 0 1 0 0-2.465zm13.968-2.147a2.904 2.904 0 0 1-4.108 0a2.902 2.902 0 0 1 0-4.107a2.902 2.902 0 0 1 4.108 0a2.902 2.902 0 0 1 0 4.107z" fill="#FFCC4D"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    <svg class="dark" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" aria-hidden="true" focusable="false" width="1em" height="1em" style="-ms-transform: rotate(360deg); -webkit-transform: rotate(360deg); transform: rotate(360deg);" preserveAspectRatio="xMidYMid meet" viewBox="0 0 36 36"><path fill="#FFD983" d="M16 2s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2V2zm18 14s2 0 2 2s-2 2-2 2h-2s-2 0-2-2s2-2 2-2h2zM4 16s2 0 2 2s-2 2-2 2H2s-2 0-2-2s2-2 2-2h2zm5.121-8.707s1.414 1.414 0 2.828s-2.828 0-2.828 0L4.878 8.708s-1.414-1.414 0-2.829c1.415-1.414 2.829 0 2.829 0l1.414 1.414zm21 21s1.414 1.414 0 2.828s-2.828 0-2.828 0l-1.414-1.414s-1.414-1.414 0-2.828s2.828 0 2.828 0l1.414 1.414zm-.413-18.172s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zm-21 21s-1.414 1.414-2.828 0s0-2.828 0-2.828l1.414-1.414s1.414-1.414 2.828 0s0 2.828 0 2.828l-1.414 1.414zM16 32s0-2 2-2s2 2 2 2v2s0 2-2 2s-2-2-2-2v-2z"/><circle fill="#FFD983" cx="18" cy="18" r="10"/><rect x="0" y="0" width="36" height="36" fill="rgba(0, 0, 0, 0)" /></svg>
+                    </button>
+                
+            </div>
+            </div>
+    </div>
+</nav>
+
+        <main>
+            
+<div class="container">
+    <article>
+        <header class="article-header">
+            <div class="thumb">
+                <div>
+                    <h1>Container image builds using IBM Code Engine</h1>
+                    <div class="post-meta">
+                        <div>
+                            
+                            
+                            By Ryan Tiffany | <time>March 05, 2021</time>
+                            | 5 minutes
+                        </div>
+                        <div class="tags">
+                            
+                            <a href="/tags/code-engine/">code-engine</a>
+                            
+                            <a href="/tags/serverless/">serverless</a>
+                            
+                            <a href="/tags/containers/">containers</a>
+                            
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </header>
+    </article>
+
+    <div class="article-post">
+    <h2 id="overview">
+    <a href="#overview" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Overview
+</h2>
+<p>This guide will show you how to use the experimental <a href="https://cloud.ibm.com/docs/codeengine?topic=codeengine-about">IBM Code Engine</a> to build a container image from a Source control repository. Behind the scenes Code Engine will use <a href="https://tekton.dev/">Tekton</a> pipelines to pull our source code from a Github repository and then create a container image using the supplied Docker file. After the build is complete Code Engine will push the new container image in to the <a href="https://cloud.ibm.com/docs/Registry?topic=Registry-registry_overview">IBM Cloud Container Registry</a>.</p>
+<p><strong>NOTE</strong>: Code Engine is currently an experimental offering and all resources are deleted every 7 days.</p>
+<h2 id="start-a-session-in-ibm-cloud-shell">
+    <a href="#start-a-session-in-ibm-cloud-shell" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Start a session in IBM Cloud Shell
+</h2>
+<p>In the IBM Cloud console, click the IBM Cloud Shell icon</p>
+<p><img loading="lazy" 
+    src="https://dsc.cloud/quickshare/Shared-Image-2020-09-23-09-26-23.png" 
+    alt="Cloud Shell Icon" 
+     />.</p>
+<p>A session starts and automatically logs you in through the IBM Cloud CLI.</p>
+<h2 id="target-resource-group">
+    <a href="#target-resource-group" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Target Resource Group
+</h2>
+<p>In oder to interact with the Code Engine CLI we first need to target the Resource Group where the Code Engine project will be created:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud target -g &lt;Your Resource Group&gt;
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="create-a-code-engine-project">
+    <a href="#create-a-code-engine-project" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Create a Code Engine Project
+</h2>
+<p>The first step is to create a Code Engine project.</p>
+<blockquote>
+<p>Keep in mind during the Beta phase you are limited to one Code Engine project per region. If you already have a Code Engine project you can simply target that project using the command <code>ibmcloud ce project target -n &lt;name of project&gt;</code></p>
+</blockquote>
+<p>We&rsquo;ll specify the <code>--target</code> option to automatically have the Code Engine cli target our new project:</p>
+<pre tabindex="0"><code>$ ibmcloud ce project create -n &lt;Project Name&gt; --target
+</code></pre><p>The project creation can take a few minutes, but when it completes you should see something like this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce project create -n ce-demo-project --target
+</span></span><span class="line"><span class="cl">Creating project <span class="s1">&#39;ce-demo-project&#39;</span>...
+</span></span><span class="line"><span class="cl">Waiting <span class="k">for</span> project <span class="s1">&#39;ce-demo-project&#39;</span> to be in ready state...
+</span></span><span class="line"><span class="cl">Now selecting project <span class="s1">&#39;ce-demo-project&#39;</span>.
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="create-an-api-key-for-code-engine-for-registry-access">
+    <a href="#create-an-api-key-for-code-engine-for-registry-access" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Create an API Key for Code Engine for Registry Access
+</h2>
+<p>As part of our Build process we are going be pulling a public Github repo but then pushing the built container in to <a href="https://cloud.ibm.com/docs/Registry?topic=Registry-registry_overview">IBM Cloud Container Registry</a>. In order for our Code Engine project to be able to push to the registry we&rsquo;ll need to create an API key.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud iam api-key-create &lt;Project Name&gt;-cliapikey -d <span class="s2">&#34;API Key for talking to Image registry from Code Engine&#34;</span> --file key_file
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="create-code-engine-registry-secret">
+    <a href="#create-code-engine-registry-secret" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Create Code Engine Registry Secret
+</h2>
+<p>With our API key created, we will now add the IBM Cloud Container Registry to Code Engine. When using the IBM Container Registry the username will always be <code>iamapikey</code>. If you would like to push to an alternate IBM Container Registry <a href="https://cloud.ibm.com/docs/Registry?topic=Registry-registry_overview#registry_regions_local">endpoint</a> update the <code>--server</code> flag accordingly.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ <span class="nb">export</span> <span class="nv">CR_API_KEY</span><span class="o">=</span><span class="sb">`</span>jq -r <span class="s1">&#39;.apikey&#39;</span> &lt; key_file<span class="sb">`</span>
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ibmcloud ce registry create --name ibmcr --server us.icr.io --username iamapikey --password <span class="s2">&#34;</span><span class="si">${</span><span class="nv">CR_API_KEY</span><span class="si">}</span><span class="s2">&#34;</span>
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>You can view all of your registry secrets by running the command: <code>ibmcloud ce registry list</code>.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span><span class="lnt">5
+</span><span class="lnt">6
+</span><span class="lnt">7
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce registry list 
+</span></span><span class="line"><span class="cl">Project <span class="s1">&#39;demo-rt&#39;</span> and all its contents will be automatically deleted <span class="m">7</span> days from now.
+</span></span><span class="line"><span class="cl">Listing image registry access secrets...
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Name   Age  
+</span></span><span class="line"><span class="cl">ibmcr  11s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><h2 id="create-code-engine-build-definition">
+    <a href="#create-code-engine-build-definition" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Create Code Engine Build Definition
+</h2>
+<p>With the Registry access added we can now create our Build definition. If you do not already have a Container namespace to push images to, please follow [this guide to create one.</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce build create --name go-app-example-build --source https://github.com/greyhoundforty/ce-build-example-go --strategy kaniko --size medium --image us.icr.io/&lt;namespace&gt;/go-app-example --registry-secret ibmcr
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p><strong>The breakdown of the command:</strong></p>
+<ul>
+<li>name: The name of the build definition</li>
+<li>source: The Source control repository where our code lives</li>
+<li>strategy:  The <a href="https://cloud.ibm.com/docs/codeengine?topic=codeengine-plan-build#build-strategy">build strategy</a>  we will use to build the image. In this case since our repository has a Dockerfile we will use <code>kaniko</code></li>
+<li>size: The size of the build defines how CPU cores, memory, and disk space are assigned to the build</li>
+<li>image: The Container Registry namespace and image name to push our built container image</li>
+<li>registry-secret: The Container Registry secret that allows Code Engine to push and pull images</li>
+</ul>
+<h2 id="submit-the-build-job">
+    <a href="#submit-the-build-job" class="anchor">
+        <svg class="icon" aria-hidden="true" focusable="false" height="16" version="1.1" viewBox="0 0 16 16" width="16">
+            <path fill-rule="evenodd"
+                d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z">
+            </path>
+        </svg>
+    </a>
+    Submit the Build Job
+</h2>
+<p>Before the Build run is submitted (the actual process of building the container image), we’ll want to target the underlying Kubernetes cluster that powers Code Engine. This will allow us to see the pods that are spun up for the build as well as track it’s progress. To have <code>kubctl</code> within Cloud Shell target our cluster run the following command: <code>ibmcloud ce project target -n &lt;Name of Project&gt; -k</code></p>
+<p>You should see output similar to this:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span><span class="lnt">4
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce project target -n demo-rt -k 
+</span></span><span class="line"><span class="cl">Selecting project <span class="s1">&#39;demo-rt&#39;</span>...
+</span></span><span class="line"><span class="cl">Added context <span class="k">for</span> <span class="s1">&#39;demo-rt&#39;</span> to the current kubeconfig file.
+</span></span><span class="line"><span class="cl">OK
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>With <code>kubectl</code> properly configured we can now launch the actual build of our container image using the <code>buildrun</code> command. We specify the build definition we created previously with the <code>--build</code> flag:</p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce buildrun submit --name go-app-buildrun-v1 --build go-app-example-build
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>You can check the status of the build run using the command <code>ibmcloud ce buildrun get --name &lt;Name of build run&gt;</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ ibmcloud ce buildrun get --name go-app-buildrun-v1
+</span></span><span class="line"><span class="cl">Project <span class="s1">&#39;demo-rt&#39;</span> and all its contents will be automatically deleted <span class="m">7</span> days from now.
+</span></span><span class="line"><span class="cl">Getting build run <span class="s1">&#39;go-app-buildrun-v1&#39;</span>...
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Name:          go-app-buildrun-v1
+</span></span><span class="line"><span class="cl">ID:            d378e865-ecf4-4e26-932d-acb437eef0ef
+</span></span><span class="line"><span class="cl">Project Name:  demo-rt
+</span></span><span class="line"><span class="cl">Project ID:    ab07a001-9a77-4fd8-82e8-d4f8395ad735
+</span></span><span class="line"><span class="cl">Age:           36s
+</span></span><span class="line"><span class="cl">Created:       2020-09-23 09:13:33 -0500 CDT
+</span></span><span class="line"><span class="cl">Status:
+</span></span><span class="line"><span class="cl">  Reason:      Running
+</span></span><span class="line"><span class="cl">  Registered:  Unknown
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Instances:
+</span></span><span class="line"><span class="cl">  Name                                Running  Status   Restarts  Age
+</span></span><span class="line"><span class="cl">  go-app-buildrun-v1-xpqfq-pod-hqchd  2/4      Running  <span class="m">0</span>         34s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>You can also check on the status of the Kubernetes pods by running <code>kubectl get pods</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt">1
+</span><span class="lnt">2
+</span><span class="lnt">3
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ kubectl get pods
+</span></span><span class="line"><span class="cl">NAME                                 READY   STATUS      RESTARTS   AGE
+</span></span><span class="line"><span class="cl">go-app-buildrun-v1-xpqfq-pod-hqchd   2/4     Running     <span class="m">0</span>          41s
+</span></span></code></pre></td></tr></table>
+</div>
+</div><p>If the build completes successfully the pods will show <code>Completed</code> and the build run will show <code>Succeeded</code></p>
+<div class="highlight"><div class="chroma">
+<table class="lntable"><tr><td class="lntd">
+<pre tabindex="0" class="chroma"><code><span class="lnt"> 1
+</span><span class="lnt"> 2
+</span><span class="lnt"> 3
+</span><span class="lnt"> 4
+</span><span class="lnt"> 5
+</span><span class="lnt"> 6
+</span><span class="lnt"> 7
+</span><span class="lnt"> 8
+</span><span class="lnt"> 9
+</span><span class="lnt">10
+</span><span class="lnt">11
+</span><span class="lnt">12
+</span><span class="lnt">13
+</span><span class="lnt">14
+</span><span class="lnt">15
+</span><span class="lnt">16
+</span><span class="lnt">17
+</span><span class="lnt">18
+</span><span class="lnt">19
+</span><span class="lnt">20
+</span><span class="lnt">21
+</span><span class="lnt">22
+</span></code></pre></td>
+<td class="lntd">
+<pre tabindex="0" class="chroma"><code class="language-shell" data-lang="shell"><span class="line"><span class="cl">$ kubectl get pods
+</span></span><span class="line"><span class="cl">NAME                                 READY   STATUS      RESTARTS   AGE
+</span></span><span class="line"><span class="cl">go-app-buildrun-v1-xpqfq-pod-hqchd   0/4     Completed   <span class="m">0</span>          4m10s
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">$ ibmcloud ce buildrun get --name go-app-buildrun-v1
+</span></span><span class="line"><span class="cl">Project <span class="s1">&#39;demo-rt&#39;</span> and all its contents will be automatically deleted <span class="m">7</span> days from now.
+</span></span><span class="line"><span class="cl">Getting build run <span class="s1">&#39;go-app-buildrun-v1&#39;</span>...
+</span></span><span class="line"><span class="cl">OK
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Name:          go-app-buildrun-v1
+</span></span><span class="line"><span class="cl">ID:            d378e865-ecf4-4e26-932d-acb437eef0ef
+</span></span><span class="line"><span class="cl">Project Name:  demo-rt
+</span></span><span class="line"><span class="cl">Project ID:    ab07a001-9a77-4fd8-82e8-d4f8395ad735
+</span></span><span class="line"><span class="cl">Age:           4m26s
+</span></span><span class="line"><span class="cl">Created:       2020-09-23 09:13:33 -0500 CDT
+</span></span><span class="line"><span class="cl">Status:
+</span></span><span class="line"><span class="cl">  Reason:      Succeeded
+</span></span><span class="line"><span class="cl">  Registered:  True
+</span></span><span class="line"><span class="cl">
+</span></span><span class="line"><span class="cl">Instances:
+</span></span><span class="line"><span class="cl">  Name                                Running  Status     Restarts  Age
+</span></span><span class="line"><span class="cl">  go-app-buildrun-v1-xpqfq-pod-hqchd  0/4      Succeeded  <span class="m">0</span>         4m24s
+</span></span></code></pre></td></tr></table>
+</div>
+</div>
+    </div>
+</div>
+
+<div class="container">
+    
+    <nav class="flex container suggested">
+        
+        <a rel="prev" href="/post/cross-account-sync-ce/" title="Previous post (older)">
+            <span>Previous</span>
+            Cross account Object Storage bucket sync with Code Engine
+            </a>
+        
+        
+        
+        <a rel="next" href="/post/resource-search/" title="Next post (newer)">
+            <span>Next</span>
+            Resource search using the IBM Cloud CLI
+            </a> 
+        
+    </nav>
+    
+</div>
+ 
+<div class="container">
+    
+</div>
+
+</main>
+
+
+        </main>
+        <footer class="footer flex">
+    <section class="container">
+        <nav class="footer-links">
+            
+            <a href="/index.xml">RSS</a>
+            
+        </nav>
+
+        
+    </section>
+    <script defer src="/ts/features.b100c41612d4f227737330068fff680507df0ae869dc2d689c8fae0a7f95c711.js" 
+    data-enable-footnotes="true"
+    ></script>
+</footer>
+
+    </body>
+</html>

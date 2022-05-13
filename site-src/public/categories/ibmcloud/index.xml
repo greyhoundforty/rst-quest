@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>ibmcloud on  the quest</title>
+    <link>https://rst.quest/categories/ibmcloud/</link>
+    <description>Recent content in ibmcloud on  the quest</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Sat, 05 Mar 2022 00:00:00 +0000</lastBuildDate><atom:link href="https://rst.quest/categories/ibmcloud/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Resource search using the IBM Cloud CLI</title>
+      <link>https://rst.quest/post/resource-search/</link>
+      <pubDate>Sat, 05 Mar 2022 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/resource-search/</guid>
+      <description>These examples are broken up in to two sections:
+ Cloud IaaS (Classic Infrastructure)   Note: The following examples use jq to parse the json output returned by the IBM Cloud CLIs output flag. If you do not have jq installed or cannot install it, you can use IBM Cloud Shell which includes jq by default.
+    Search Cloud Resources     Search for resource by name  Search for a cloud resource with the name devcluster:</description>
+    </item>
+    
+    <item>
+      <title>Container image builds using IBM Code Engine</title>
+      <link>https://rst.quest/post/container-image-build-ce/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/container-image-build-ce/</guid>
+      <description>Overview  This guide will show you how to use the experimental IBM Code Engine to build a container image from a Source control repository. Behind the scenes Code Engine will use Tekton pipelines to pull our source code from a Github repository and then create a container image using the supplied Docker file. After the build is complete Code Engine will push the new container image in to the IBM Cloud Container Registry.</description>
+    </item>
+    
+    <item>
+      <title>Cross account Object Storage bucket sync with Code Engine</title>
+      <link>https://rst.quest/post/cross-account-sync-ce/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/cross-account-sync-ce/</guid>
+      <description>Overview  In this guide I will show you how to sync IBM Cloud Object Storage buckets between accounts using Code Engine. Code Engine provides a platform to unify the deployment of all of your container-based applications on a Kubernetes-based infrastructure. The Code Engine experience is designed so that you can focus on writing code without the need for you to learn, or even know about, Kubernetes.</description>
+    </item>
+    
+    <item>
+      <title>Getting started with IBM Cloud Shell</title>
+      <link>https://rst.quest/post/cloud-shell/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/cloud-shell/</guid>
+      <description>Cloud Shell  IBM Cloud Shell is a free service that gives you complete control of your cloud resources, applications, and infrastructure, from any web browser. It’s instantly accessible from your free IBM Cloud account—no other installation is needed. In the IBM Cloud console, click the IBM Cloud Shell icon . A session starts and automatically logs you in through the IBM Cloud CLI. You can open up to five concurrent sessions, which operate independently so you can work with different resources, regions, and accounts at once.</description>
+    </item>
+    
+    <item>
+      <title>Using the IBM Cloud VPC CLI Plugin</title>
+      <link>https://rst.quest/post/vpc/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/vpc/</guid>
+      <description>Overview  The VPC plugin allows you to interact with your VPCs, Subnets, Gateways, and more that are running in the IBM Cloud. In this guide I will show how to install the plugin and use it to list, query, and interact with the resources that are deployed as part of your Virtual Private Cloud.
+ Note: The following examples use jq to parse the json output returned by the IBM Cloud CLIs output flag.</description>
+    </item>
+    
+    <item>
+      <title>Using the Object Storage CLI Plugin</title>
+      <link>https://rst.quest/post/icos/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/icos/</guid>
+      <description>Overview  Examples of interacting with the IBM Cloud Object Storage CLI Plugin.
+   Prerequisites  Requires the cos plugin to be installed.
+   Configure cos plugin to use your object storage instance   NAME_OF_COS_INSTANCE: The name of the existing Object Storage instance to interact with  1  ibmcloud cos config crn --crn $(ibmcloud resource service-instance NAME_OF_COS_INSTANCE --output json | jq -r &amp;#39;.</description>
+    </item>
+    
+  </channel>
+</rss>

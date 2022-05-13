@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+  <channel>
+    <title>object-storage on  the quest</title>
+    <link>https://rst.quest/tags/object-storage/</link>
+    <description>Recent content in object-storage on  the quest</description>
+    <generator>Hugo -- gohugo.io</generator>
+    <language>en-us</language>
+    <lastBuildDate>Fri, 05 Mar 2021 00:00:00 +0000</lastBuildDate><atom:link href="https://rst.quest/tags/object-storage/index.xml" rel="self" type="application/rss+xml" />
+    <item>
+      <title>Cross account Object Storage bucket sync with Code Engine</title>
+      <link>https://rst.quest/post/cross-account-sync-ce/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/cross-account-sync-ce/</guid>
+      <description>Overview  In this guide I will show you how to sync IBM Cloud Object Storage buckets between accounts using Code Engine. Code Engine provides a platform to unify the deployment of all of your container-based applications on a Kubernetes-based infrastructure. The Code Engine experience is designed so that you can focus on writing code without the need for you to learn, or even know about, Kubernetes.</description>
+    </item>
+    
+    <item>
+      <title>Using the Object Storage CLI Plugin</title>
+      <link>https://rst.quest/post/icos/</link>
+      <pubDate>Fri, 05 Mar 2021 00:00:00 +0000</pubDate>
+      
+      <guid>https://rst.quest/post/icos/</guid>
+      <description>Overview  Examples of interacting with the IBM Cloud Object Storage CLI Plugin.
+   Prerequisites  Requires the cos plugin to be installed.
+   Configure cos plugin to use your object storage instance   NAME_OF_COS_INSTANCE: The name of the existing Object Storage instance to interact with  1  ibmcloud cos config crn --crn $(ibmcloud resource service-instance NAME_OF_COS_INSTANCE --output json | jq -r &amp;#39;.</description>
+    </item>
+    
+  </channel>
+</rss>
