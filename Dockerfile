@@ -8,4 +8,5 @@ ENTRYPOINT ["hugo"]
 CMD ["--destination", "public"]
 
 FROM caddy:alpine
-COPY --from=hugo /opt/site-src/ /usr/share/caddy
+RUN rm -f /usr/share/caddy/index.html
+COPY --from=hugo /opt/site-src/public /usr/share/caddy
