@@ -1,16 +1,23 @@
-name: Build and push to ICR
+name: Build, push, and deploy to Code Engine
+
 on:
   - push
+env:
+  GITHUB_SHA: ${{ github.sha }}
+  IBM_CLOUD_API_KEY: ${{ secrets.REGISTRY_PASSWORD }}
+  IBM_CLOUD_REGION: us-south
+  IBM_CLOUD_RESOURCE_GROUP: ${{ secrets.IBM_CLOUD_RESOURCE_GROUP }}
+  IMAGE_NAME: rtiffany/rst-quest
+  REGISTRY: us.icr.io
+  CODE_ENGINE_PROJECT: ${{ secrets.CODE_ENGINE_PROJECT }}
+  CODE_ENGINE_APP: ${{ secrets.CODE_ENGINE_APP }}
 
 jobs:
-  build:
+  build-push-update:
     name: Build image
     runs-on: ubuntu-latest
-    env:
-      IMAGE_NAME: rtiffany/rst-quest
-      REGISTRY: us.icr.io
+    
     steps:
-
     - name: Clone the repository
       uses: actions/checkout@v2
 
@@ -23,14 +30,14 @@ jobs:
         containerfiles: |
           ./Dockerfile
 
-    - name: Log in to the IBM Cloud Container registry (us-south endpoint)
+    - name: Log in to the IBM Cloud Container registry
       uses: redhat-actions/podman-login@v1
       with:
         registry: ${{ env.REGISTRY }}
         username: iamapikey
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
-    - name: Push to IBM Cloud Global Container Repository
+    - name: Push to IBM Cloud Container Repository
       id: push-to-icr
       uses: redhat-actions/push-to-registry@v2
       with:
@@ -40,3 +47,24 @@ jobs:
 
     - name: Print image url
       run: echo "Image pushed to ${{ steps.push-to-icr.outputs.registry-paths }}"
+
+    - name: Install IBM Cloud CLI
+      run: |
+        curl -fsSL https://clis.cloud.ibm.com/install/linux | sh
+        ibmcloud --version
+        ibmcloud config --check-version=false
+        ibmcloud plugin install -f code-engine
+        ibmcloud plugin install -f container-registry 
+    # Authenticate with IBM Cloud CLI
+    - name: Authenticate with IBM Cloud CLI
+      run: |
+        ibmcloud login -r ${{ env.IBM_CLOUD_REGION }} --apikey ${{ env.IBM_CLOUD_API_KEY }} 
+        ibmcloud target -g ${{ env.IBM_CLOUD_RESOURCE_GROUP }}
+        ibmcloud cr region-set ${{ env.IBM_CLOUD_REGION }}
+        ibmcloud cr login
+    
+    - name: Target Code Engine project 
+      run: |
+        ibmcloud code-engine project target --name ${{ env.CODE_ENGINE_PROJECT }}
+        ibmcloud code-engine app update --name ${{ env.CODE_ENGINE_APP }} --image "${REGISTRY_HOSTNAME}"/"${IMAGE_NAME}":"${GITHUB_SHA}" --registry-secret new-rs --port http1:80
+
