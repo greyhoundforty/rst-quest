@@ -66,5 +66,5 @@ jobs:
     - name: Target Code Engine project 
       run: |
         ibmcloud code-engine project target --name ${{ env.CODE_ENGINE_PROJECT }}
-        ibmcloud code-engine app update --name ${{ env.CODE_ENGINE_APP }} --image "${REGISTRY_HOSTNAME}"/"${IMAGE_NAME}":"${GITHUB_SHA}" --registry-secret new-rs --port http1:80
+        ibmcloud code-engine app update --name ${{ env.CODE_ENGINE_APP }} --image "${REGISTRY}"/"${IMAGE_NAME}":"${GITHUB_SHA}" --registry-secret new-rs --port http1:80
 
