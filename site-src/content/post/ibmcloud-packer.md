@@ -8,7 +8,7 @@
 
 In traditional deployment scenarios the workflow looks like this:
 
-![Traditional flow](images/traditional-flow.png)
+![Traditional flow](https://dsc.cloud/quickshare/traditional-flow.png)
 
 Our developers write some code, our ops team deploys the needed infrastructure, and then has to:
 
@@ -21,13 +21,13 @@ While this is not necessarily a big deal for smaller deployments or in-house pro
 
 With Packer we can swap those last 2 actions so that the machines we provision are up-to-date, pre-baked, and ready for production.  
 
-![Packer flow](images/packer-flow.png)
+![Packer flow](https://dsc.cloud/quickshare/packer-flow.png)
 
 ## The Packer Template
 
 A Packer template is split in to many configuration `blocks` that determine how the machine image is created.
 
-![Packer template overview](images/packer-config.png)
+![Packer template overview](https://dsc.cloud/quickshare/packer-config.png)
 
 ### Packer block
 
@@ -156,6 +156,4 @@ When we initiate a `packer build` several things happen:
 
 ---
 
-![Packer flow in IBM Cloud](images/ibm-packer-flow.png)
-
-## Let's see some code!
+![Packer flow in IBM Cloud](https://dsc.cloud/quickshare/ibm-packer-flow.png)
