@@ -1,4 +1,14 @@
-# Getting Started with Packer on IBM Cloud
+---
+author: "Ryan Tiffany"
+title: "Getting Started with Packer on IBM Cloud"
+date: "2022-06-10"
+tags:
+- packer
+categories:
+- ibmcloud
+---
+
+In this guide I will introduce you to [Packer](https://www.packer.io), it's main components, and then how to use it on the IBM Cloud to build "golden images".
 
 ## Packer Overview
 
@@ -33,6 +43,8 @@ A Packer template is split in to many configuration `blocks` that determine how 
 
 The [Packer](https://www.packer.io/docs/templates/hcl_templates/blocks/packer) block is used to control the behavior of Packer itself. In most cases this is you would set version constraints or declare all of the plugins required for the machine image to be created. 
 
+For IBM Cloud our Packer block would look like this:
+
 ```hcl
 packer {
   required_plugins {
@@ -46,13 +58,15 @@ packer {
 
 ### Variables
 
-The [Variables](https://www.packer.io/docs/templates/hcl_templates/blocks/variable) block allows you to define variables within your Packer configuration.
+The [Variables](https://www.packer.io/docs/templates/hcl_templates/blocks/variable) block allows you to define variables within your Packer configuration. These can be used within build sources and provisioners.
 
 You can pass variables to the build process in several ways:
 
 - Environment Variables
-- Manually configured in the packer file 
+- Manually configured in the packer file
 - Via the CLI with the `-var` and `-var-file` options
+
+For IBM Cloud, the two main variables we would be setting are the API Key used to provision the infrastructure, and the VPC [Region]() where the image will be created and stored. In this example I am using one Environment Variable and one Manually Configured variable type:
 
 ```hcl
 variable "ibm_api_key" {
@@ -64,25 +78,21 @@ variable "ibm_region" {
   type    = string
   default = "ca-tor"
 }
-
-variable "another_secret_one" {
-    type = string
-}
 ```
 
 ### Source Blocks
 
-The [Source](https://www.packer.io/docs/templates/hcl_templates/blocks/source) block defines an image builder plugin. The first label — `ibmcloud-vpc` here — is the builder plugin used to create our machine image.
+The [Source](https://www.packer.io/docs/templates/hcl_templates/blocks/source) block defines an image builder plugin. The first label — `ibmcloud-vpc` here — is the builder plugin used to create our machine image. It instructs the builder which plugin to use for our image creation (aka IBM Cloud).
 
 ```hcl
 source "ibmcloud-vpc" "ubuntu_base_image" {
   api_key = "${var.ibm_api_key}"
   region  = "${var.ibm_region}"
 
-  subnet_id          = "02q7-fc0598ac-2e8b-4eb5-9349-868dc78d86d6"
-  resource_group_id  = "6b6211f1af784e62874070340ee4b6be"
-  security_group_id  = "r038-be438e0d-6bb1-41ee-8016-5e5ba2d53bef"
-  vsi_base_image_id  = "r038-83d9d391-4449-4037-b64f-fdb642c2786c"
+  subnet_id          = "02q7-xxxx-2e8b-xxx-xxx-xxxxxx"
+  resource_group_id  = "6b6xxxx784e62xxxx4b6be"
+  security_group_id  = "r038-xxxx-6bb1-xxxx-8016-xxxx"
+  vsi_base_image_id  = "r038-xxxx-4449-xxxx-b64f-xxxx"
   vsi_profile        = "cx2-2x4"
   vsi_interface      = "public"
   vsi_user_data_file = "init.yml"
@@ -100,7 +110,7 @@ source "ibmcloud-vpc" "ubuntu_base_image" {
 
 ### Build Blocks
 
-The [Build](https://www.packer.io/docs/templates/hcl_templates/blocks/build) block defines what builders are started, how to provision them and if necessary what to do with their artifacts using post-process.
+The [Build](https://www.packer.io/docs/templates/hcl_templates/blocks/build) block defines what builders are started, how to provision them and if necessary what to do with their artifacts using post-process. In this example I am creating 3 golden images of different OS types:
 
 ```hcl
 build {
@@ -157,3 +167,5 @@ When we initiate a `packer build` several things happen:
 ---
 
 ![Packer flow in IBM Cloud](https://dsc.cloud/quickshare/ibm-packer-flow.png)
+
+If you would like to see some some more real world examples of using Packer on IBM Cloud, I have created a Github repository [here](https://github.com/cloud-design-dev/ibmcloud-vpc-packer).
