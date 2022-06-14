@@ -10,6 +10,8 @@ categories:
 
 In this guide I will introduce you to [Packer](https://www.packer.io), it's main components, and then how to use it on the IBM Cloud to build "golden images".
 
+  > If you are already familiar with Packer as a concept and just want to get your hands on the code and test yourself, skip ahead to the [Example](#example-template) section.
+
 ## Packer Overview
 
 [Packer](https://www.packer.io) is an open-source tool from Hashicorp that helps you automate the process creating machine images. In this context, a machine image is a piece of immutible infrastructure that contains a preconfigured operating system and installed software/applications. Packer allows you to build images across multiple cloud and compute providers and on-prem infrastructure.
@@ -152,7 +154,7 @@ build {
   }
 ```
 
-## Packer Build Flow
+## IBM Cloud Packer Build Flow
 
 When we initiate a `packer build` several things happen:
 
@@ -168,4 +170,27 @@ When we initiate a `packer build` several things happen:
 
 ![Packer flow in IBM Cloud](https://dsc.cloud/quickshare/ibm-packer-flow.png)
 
-If you would like to see some some more real world examples of using Packer on IBM Cloud, I have created a Github repository [here](https://github.com/cloud-design-dev/ibmcloud-vpc-packer).
+## Example Template
+
+I've created a [Github repository](https://github.com/cloud-design-dev/ibmcloud-vpc-packer) that has some basic examples. If you want to test a really simple example you can clone the repo and go in to the `starter` directory.
+
+```sh
+git clone https://github.com/cloud-design-dev/ibmcloud-vpc-packer.git
+cd ibmcloud-vpc-packer/starter
+```
+
+After you've cloned the repository and changed in to the correct directory, you will need to copy the `example.pkrvars` to `.pkvars.hcl` and update the file with the required variables.
+
+With those set, we can initialize and validate the template by running the following commands:
+
+```sh
+packer init starter.pkr.hcl
+
+packer validate -var-file=.pkrvars.hcl starter.pkr.hcl
+```
+
+If the validation step succeeds, you are ready to build the image with the `build` command:
+
+```sh
+packer build -var-file=.pkrvars.hcl starter.pkr.hcl
+```
