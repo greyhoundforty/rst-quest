@@ -1,7 +1,7 @@
 FROM klakegg/hugo AS hugo
 
 
-COPY . /opt
+COPY site-src/ /opt
 WORKDIR /opt/site-src
 
 ENTRYPOINT ["hugo"]
