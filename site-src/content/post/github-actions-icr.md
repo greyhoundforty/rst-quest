@@ -10,18 +10,15 @@ categories:
 - ibmcloud
 ---
 
-Today I will be using GitHub [Actions](https://docs.github.com/en/actions) and [Podman][podman] to build and push a container image to the IBM Cloud [Container Registry][icr]. GitHub Actions is a CI/CD platform for automating the building, testing, and deployment of code. A repository can have multiple Action `workflows` and can handle things like:
+Today I will be showing an example GitHub [Action](https://docs.github.com/en/actions) that will use [Podman][podman] to build and push a container image to the IBM Cloud [Container Registry][icr]. If your container file is not named `Dockerfile`, or is not in the root directory of your repository, update the `containerfiles` section of the yaml file.  
 
-- Run integration tests on every pull request
-- Add labels new newly opened issues
-- Deploy all merged PRs to production
-- Build container images/release packages
+## Prepare Github repository
 
-In our case the action will containerize our simple `go` app when we push changes to the main branch of the repository.
+You will need to add two Action [Secrets][action-secret] for this workflow Action to run correctly.
 
-## The Action Workflow
+- **IMAGE_NAME**: The name of the container image. This will be in the form of `namespace/container-image`. Ex: `ryantiffany/nginx`
+- **REGISTRY_PASSWORD**: An IBM Cloud [API Key][api-key] that is used to authenticate podman with the container registry service.
 
-Here is the workflow file for our example repository. It uses podman to build our container image and tags it with `latest` as well as the GitHub commit SHA that triggered the workflow.
 
 ```yaml
 name: Use Podman to build and push container image to IBM Cloud Registry
@@ -53,7 +50,7 @@ jobs:
     - name: Log in to the IBM Cloud Container registry
       uses: redhat-actions/podman-login@v1
       with:
-        registry: ${{ env.REGISTRY }}
+        registry: ${{ env.REGISTRY_URL }}
         username: iamapikey
         password: ${{ secrets.REGISTRY_PASSWORD }}
 
@@ -69,25 +66,7 @@ jobs:
       run: echo "Image pushed to ${{ steps.push-to-icr.outputs.registry-paths }}"
 ```
 
-## Prepare Github
-Click [here](https://github.com/cloud-design-dev/icr-github-action-example/fork) to fork the example repository to your Github account. Once that is done you will need to add two Action [Secrets][action-secret] to the respository for proper Authentication with the container registry.
-
-- **IMAGE_NAME**: The name of the container image. This will be in the form of `namespace/container-image`. Ex: `ryantiffany/nginx`
-- **REGISTRY_PASSWORD**: An IBM Cloud [API Key] that is used to authenticate podman with the container registry service.
-
-To add the secrets:
-
-- From the main page of the repository, click *Settings*
-
-![](https://dsc.cloud/quickshare/repo-actions-settings.png)
-
-- On the left hand navigation, expand the *Secrets* menu and click *Actions*
-- Click *New repository secret* and add the `IMAGE_NAME` secret.
-- Repeat the process to add the `REGISTRY_PASSWORD` secret as well.
-
-With the Secrets added to your repository, let's clone the . 
-
-
 [podman]: https://podman.io
 [icr]: https://cloud.ibm.com/docs/Registry?topic=Registry-registry_overview
 [action-secret]: https://docs.github.com/en/actions/security-guides/encrypted-secrets#creating-encrypted-secrets-for-a-repository
+[api-key]: https://cloud.ibm.com/docs/account?topic=account-userapikey&interface=ui
